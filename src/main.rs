@@ -79,10 +79,10 @@ fn main() {
     if !help && file.is_empty() {
         // Reading from pipe adapted from:
         // https://stackoverflow.com/a/49734144
-        let mut input = String::new();
         let mut v: Vec<String> = vec![];
 
         loop {
+            let mut input = String::new();
             std::io::stdin()
                 .read_line(&mut input)
                 .expect("Failed to read from stdin!");
@@ -96,7 +96,7 @@ fn main() {
 
         let line_number: usize = line.parse().expect("Please provide a valid line number!");
 
-        if !v.len() < line_number {
+        if line_number <= v.len()  {
             if csv {
                 let line: Vec<&str> = v[line_number - 1].split(&delim).collect();
                 println!("{}", line[1]);
