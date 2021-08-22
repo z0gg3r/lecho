@@ -1,8 +1,7 @@
-// SPDX-FileCopyrightText: 2021 zocker <zockerfreunde03.info@gmx.de
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
-
-/*
+/*   SPDX-FileCopyrightText: 2021 zocker <zockerfreunde03.info@gmx.de
+ *
+ *   SPDX-License-Identifier: GPL-3.0-or-later
+ *
  *   lecho - A program to echo a specific line from a file
  *   Copyright (C) 2021  zockerfreunde03/z0gg3r
  *   This program is free software; you can redistribute it and/or modify
