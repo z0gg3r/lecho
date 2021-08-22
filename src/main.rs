@@ -76,7 +76,7 @@ fn main() {
         }
     }
 
-    if !help && file.is_empty() && line.is_empty() {
+    if !help && file.is_empty() {
         // Reading from pipe adapted from:
         // https://stackoverflow.com/a/49734144
         let mut input = String::new();
