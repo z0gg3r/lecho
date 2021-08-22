@@ -1,0 +1,47 @@
+.TH LECHO 1 2021-08-22 GNU
+
+.SH NAME
+lecho \- Line Echo
+
+.SH SYNOPSIS
+.B lecho
+\fB\-f\fR \fIfile\fR
+\fB\-l\fR \fIline\fR
+[\fB\-c\fR]
+[\fB\-d\fR \fIdelimiter\fR]
+[\fB\-h\fR]
+
+.SH DESCRIPTION
+.B lecho
+reads a file and then echos only the specified line of it. If the \-c is used
+.B lecho
+will treat the file as a Comma-Seperated-Values file and split it at the delimiter
+and echo the contents at the index 1.
+
+.SH OPTIONS
+.TP
+.B \-f \fIfile
+the file to read
+.TP
+.B \-l \fIline
+the line to print
+.TP
+.B \-c
+treat the file as a .csv
+.TP
+.B \-d \fIdelimiter
+set a custom delimiter
+.TP
+.B \-h
+display the help message
+
+.SH NOTES
+.B lecho
+expects files to be valid CSV if given the \-c option. If your file uses delimiters that
+deviate from the standard (that is a comma), please use the \-d option.
+
+.SH SEE ALSO
+RFC 4180 (CSV Standard)
+
+.SH AUTHOR
+zockerfreunde03/z0gg3r <zockerfreunde03.info@gmx.de>
