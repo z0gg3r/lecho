@@ -96,7 +96,7 @@ fn main() {
 
         let line_number: usize = line.parse().expect("Please provide a valid line number!");
 
-        if line_number <= v.len()  {
+        if line_number <= v.len() {
             if csv {
                 let line: Vec<&str> = v[line_number - 1].split(&delim).collect();
                 println!("{}", line[1]);
