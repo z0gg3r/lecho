@@ -87,7 +87,7 @@ fn main() {
                 .read_line(&mut input)
                 .expect("Failed to read from stdin!");
             input = input.trim().to_string();
-            if input == "" {
+            if input.is_empty() {
                 break;
             }
 
