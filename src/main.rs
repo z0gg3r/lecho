@@ -141,7 +141,7 @@ fn main() {
 }
 
 fn print_usage() {
-    println!("lecho -f file -l line [-c] [-d delimiter]");
+    println!("lecho -l line [-f file] [-c] [-d delimiter]");
 }
 
 fn parse(s: String) -> Vec<String> {
