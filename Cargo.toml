@@ -2,7 +2,7 @@
 name = "lecho"
 description = "Line Echo - Echo a specific line from a file"
 authors = ["zocker <zockerfreunde03.info@gmx.de>"]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2018"
 license = "GPLv3"
 

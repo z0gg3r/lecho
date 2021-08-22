@@ -5,26 +5,24 @@ lecho \- Line Echo
 
 .SH SYNOPSIS
 .B lecho
-\fB\-f\fR \fIfile\fR
 \fB\-l\fR \fIline\fR
+[\fB\-f\fR \fIfile\fR]
 [\fB\-c\fR]
 [\fB\-d\fR \fIdelimiter\fR]
 [\fB\-h\fR]
 
 .SH DESCRIPTION
 .B lecho
-reads a file and then echos only the specified line of it. If the \-c is used
-.B lecho
-will treat the file as a Comma-Separated-Values file and split it at the delimiter
-and echo the contents at the index 1.
+reads input either from stdin or a file and outputs only the specified line.
 
 .SH OPTIONS
 .TP
-.B \-f \fIfile
-the file to read
 .TP
 .B \-l \fIline
 the line to print
+.TP
+.B \-f \fIfile
+the file to print
 .TP
 .B \-c
 treat the file as a .csv

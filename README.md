@@ -4,24 +4,23 @@ lecho - Line Echo
 
 # SYNOPSIS
 
-**lecho** **-f** *file* **-l** *line* \[**-c**\] \[**-d** *delimiter*\]
-\[**-h**\]
+**lecho** **-l** *line* \[**-f** *file*\] \[**-c**\] \[**-d**
+*delimiter*\] \[**-h**\]
 
 # DESCRIPTION
 
-**lecho** reads a file and then echos only the specified line of it. If
-the -c is used **lecho** will treat the file as a Comma-Separated-Values
-file and split it at the delimiter and echo the contents at the index 1.
+**lecho** reads input either from stdin or a file and outputs only the
+specified line.
 
 # OPTIONS
-
-**-f *file***
-
-:   the file to read
 
 **-l *line***
 
 :   the line to print
+
+**-f *file***
+
+:   the file to print
 
 **-c**
 
