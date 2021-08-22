@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 zocker <zockerfreunde03.info@gmx.de
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 use getopt::Opt;
 
 struct Response {
