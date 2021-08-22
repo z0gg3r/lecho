@@ -46,4 +46,4 @@ RFC 4180 (CSV Standard)
 
 # AUTHOR
 
-zockerfreunde03/z0gg3r \<zockerfreunde03.info\@gmx.de>
+zockerfreunde03/z0gg3r <zockerfreunde03.info@gmx.de>
