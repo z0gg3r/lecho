@@ -9,7 +9,7 @@ Source: https://github.com/z0gg3r/lecho
 # Copyright: $YEAR $NAME <$CONTACT>
 # License: ...
 
-Files: lecho.1
+Files: lecho.1 README.md
 Copyright: 2021 zocker <zockerfreunde03.info@gmx.de>
 License: GFDL-1.3-or-later
 
