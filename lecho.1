@@ -33,12 +33,6 @@ set a custom delimiter
 .B \-h
 display the help message
 
-.SH BUGS
-.B lecho
-reads from stdin until it receives a blank line, thus it will only read until the first blank line. Input that contains
-blank lines (i.e. for readability) should be used with the \-f option, since this will read the entire file, including
-the blank lines.
-
 .SH NOTES
 .B lecho
 expects files to be valid CSV if given the \-c option. If your file uses delimiters that

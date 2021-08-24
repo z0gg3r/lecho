@@ -82,11 +82,13 @@ fn main() {
 
         loop {
             let mut input = String::new();
-            std::io::stdin()
+            let bytes = std::io::stdin()
                 .read_line(&mut input)
                 .expect("Failed to read from stdin!");
             input = input.trim().to_string();
-            if input.is_empty() {
+            // If we read 0 bytes we are at EOF and stop
+            // reading
+            if bytes == 0 {
                 break;
             }
 
