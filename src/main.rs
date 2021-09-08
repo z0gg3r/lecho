@@ -21,44 +21,44 @@
 use getopt::Opt;
 
 struct Response {
-    cont: String,
-    err: bool,
+        cont: String,
+        err: bool,
 }
 
 impl Response {
-    fn ok(s: String) -> Response {
-        Response {
-            cont: s,
-            err: false,
+        fn ok(s: String) -> Response {
+                Response {
+                        cont: s,
+                        err: false,
+                }
         }
-    }
 
-    fn err(s: String) -> Response {
-        Response { cont: s, err: true }
-    }
+        fn err(s: String) -> Response {
+                Response { cont: s, err: true }
+        }
 
-    fn is_ok(&self) -> bool {
-        !self.err
-    }
+        fn is_ok(&self) -> bool {
+                !self.err
+        }
 
-    fn unwrap(&self) -> String {
-        self.cont.clone()
-    }
+        fn unwrap(&self) -> String {
+                self.cont.clone()
+        }
 }
 
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
+        let args: Vec<String> = std::env::args().collect();
 
-    let mut opts = getopt::Parser::new(&args, "f:l:hcd:");
+        let mut opts = getopt::Parser::new(&args, "f:l:hcd:");
 
-    let mut file = String::new();
-    let mut line = String::new();
-    let mut help = false;
-    let mut csv = false;
-    let mut delim = String::from(",");
+        let mut file = String::new();
+        let mut line = String::new();
+        let mut help = false;
+        let mut csv = false;
+        let mut delim = String::from(",");
 
-    loop {
-        match opts
+        loop {
+                match opts
             .next()
             .transpose()
             .expect("Failed to parse arguments! Please report this to the author/maintainer!")
@@ -73,102 +73,117 @@ fn main() {
                 _ => unreachable!(),
             },
         }
-    }
-
-    if !help && file.is_empty() {
-        // Reading from pipe adapted from:
-        // https://stackoverflow.com/a/49734144
-        let mut v: Vec<String> = vec![];
-
-        loop {
-            let mut input = String::new();
-            let bytes = std::io::stdin()
-                .read_line(&mut input)
-                .expect("Failed to read from stdin!");
-            input = input.trim().to_string();
-            // If we read 0 bytes we are at EOF and stop
-            // reading
-            if bytes == 0 {
-                break;
-            }
-
-            v.push(input.clone());
         }
 
-        let line_number: usize = line.parse().expect("Please provide a valid line number!");
+        if !help && file.is_empty() {
+                // Reading from pipe adapted from:
+                // https://stackoverflow.com/a/49734144
+                let mut v: Vec<String> = vec![];
 
-        if line_number <= v.len() {
-            if csv {
-                let line: Vec<&str> = v[line_number - 1].split(&delim).collect();
-                println!("{}", line[1]);
-            } else {
-                println!("{}", v[line_number - 1]);
-            }
-        } else {
-            eprintln!(
-                "Cannot print line {} from {} lines of input!",
-                line_number,
-                v.len()
-            );
-        }
-    } else if !help && !file.is_empty() && !line.is_empty() {
-        let line_number: usize = line.parse().expect("Please provide a valid line number!");
-        let content = read_file(file);
-        if content.is_ok() {
-            let lines = parse(content.unwrap());
-            if !line_number > lines.len() {
-                if csv {
-                    let val: Vec<&str> = lines[line_number - 1].split(&delim).collect();
-                    println!("{}", val[1].to_string());
-                } else {
-                    println!("{}", lines[line_number - 1]);
+                loop {
+                        let mut input = String::new();
+                        let bytes = std::io::stdin()
+                                .read_line(&mut input)
+                                .expect("Failed to read from stdin!");
+                        input = input.trim().to_string();
+                        // If we read 0 bytes we are at EOF and stop
+                        // reading
+                        if bytes == 0 {
+                                break;
+                        }
+
+                        v.push(input.clone());
                 }
-            } else {
-                eprintln!(
+
+                let line_number: usize = line
+                        .parse()
+                        .expect("Please provide a valid line number!");
+
+                if line_number <= v.len() {
+                        if csv {
+                                let line: Vec<&str> = v[line_number - 1]
+                                        .split(&delim)
+                                        .collect();
+                                println!("{}", line[1]);
+                        } else {
+                                println!("{}", v[line_number - 1]);
+                        }
+                } else {
+                        eprintln!(
+                                "Cannot print line {} from {} lines of input!",
+                                line_number,
+                                v.len()
+                        );
+                }
+        } else if !help && !file.is_empty() && !line.is_empty() {
+                let line_number: usize = line
+                        .parse()
+                        .expect("Please provide a valid line number!");
+                let content = read_file(file);
+                if content.is_ok() {
+                        let lines = parse(content.unwrap());
+                        if !line_number > lines.len() {
+                                if csv {
+                                        let val: Vec<&str> = lines
+                                                [line_number - 1]
+                                                .split(&delim)
+                                                .collect();
+                                        println!("{}", val[1].to_string());
+                                } else {
+                                        println!("{}", lines[line_number - 1]);
+                                }
+                        } else {
+                                eprintln!(
                     "{} is too big. The file only has {} lines!",
                     line_number,
                     lines.len()
                 );
-            }
-        } else {
-            eprintln!(
+                        }
+                } else {
+                        eprintln!(
                 "There were some errors while reading the file: {}",
                 content.unwrap()
             );
+                }
+        } else {
+                print_usage();
         }
-    } else {
-        print_usage();
-    }
 }
 
 fn print_usage() {
-    println!("lecho -l line [-f file] [-c] [-d delimiter]");
+        println!("lecho -l line [-f file] [-c] [-d delimiter]");
 }
 
 fn parse(s: String) -> Vec<String> {
-    let lines: Vec<&str> = s.split('\n').collect();
+        let lines: Vec<&str> = s.split('\n').collect();
 
-    let mut v = Vec::new();
+        let mut v = Vec::new();
 
-    for line in lines {
-        v.push(String::from(line));
-    }
+        for line in lines {
+                v.push(String::from(line));
+        }
 
-    v
+        v
 }
 
 fn read_file(_path: String) -> Response {
-    let path = std::path::Path::new(&_path);
-    if !path.exists() {
-        Response::err(format!("Cannot find file {}. Does it exist?", _path))
-    } else if !path.is_file() {
-        Response::err(format!("{} exits, but does not seem to be a file.", _path))
-    } else {
-        let file = std::fs::read_to_string(path);
-        if file.is_ok() {
-            Response::ok(file.unwrap())
+        let path = std::path::Path::new(&_path);
+        if !path.exists() {
+                Response::err(format!(
+                        "Cannot find file {}. Does it exist?",
+                        _path
+                ))
+        } else if !path.is_file() {
+                Response::err(format!(
+                        "{} exits, but does not seem to be a file.",
+                        _path
+                ))
         } else {
-            Response::err(file.unwrap_err().to_string())
+                let file = std::fs::read_to_string(path);
+                if file.is_ok() {
+                        Response::ok(file.unwrap())
+                } else {
+                        Response::err(file.unwrap_err().to_string())
+                }
         }
-    }
 }
