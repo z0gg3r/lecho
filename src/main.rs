@@ -18,7 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-use getopt::Opt;
+#[macro_use]
+extern crate clap;
+use clap::{App, Arg, ArgGroup};
 
 struct Response {
         cont: String,
@@ -47,35 +49,49 @@ impl Response {
 }
 
 fn main() {
-        let args: Vec<String> = std::env::args().collect();
+        let matches = App::new(crate_name!())
+                .version(crate_version!())
+                .author(crate_authors!())
+                .about(crate_description!())
+                .arg(Arg::with_name("infile")
+                        .short("f")
+                        .long("-file")
+                        .takes_value(true)
+                        .help("The file to read"))
+                .arg(Arg::with_name("line")
+                        .takes_value(true)
+                        .help("The line to echo")
+                        .short("-l")
+                        .long("-file"))
+                .arg(Arg::with_name("_line")
+                        .takes_value(true)
+                        .help("The line to echo"))
+                .arg(Arg::with_name("csv_mode")
+                        .short("-c")
+                        .long("-csv")
+                        .help("Treat input as Commaseperated Values"))
+                .arg(Arg::with_name("delimiter")
+                        .short("-d")
+                        .long("-delmiter")
+                        .takes_value(true)
+                        .help("The delimter that is used (implies -c)"))
+                .arg(Arg::with_name("index").short("-i").long("-index").help(
+                        "Which field of the CSV line to print (Default: 2)",
+                ))
+                .group(ArgGroup::with_name("lines")
+                        .args(&["line", "_line"])
+                        .required(true))
+                .get_matches();
 
-        let mut opts = getopt::Parser::new(&args, "f:l:hcd:");
-
-        let mut file = String::new();
-        let mut line = String::new();
-        let mut help = false;
-        let mut csv = false;
-        let mut delim = String::from(",");
-
-        loop {
-                match opts
-            .next()
-            .transpose()
-            .expect("Failed to parse arguments! Please report this to the author/maintainer!")
-        {
-            None => break,
-            Some(opt) => match opt {
-                Opt('f', Some(arg)) => file = arg.clone(),
-                Opt('l', Some(arg)) => line = arg.clone(),
-                Opt('h', None) => help = true,
-                Opt('c', None) => csv = true,
-                Opt('d', Some(arg)) => delim = arg.clone(),
-                _ => unreachable!(),
-            },
-        }
-        }
-
-        if !help && file.is_empty() {
+        let file = matches.value_of("infile").unwrap_or("").to_string();
+        let line = matches.value_of("lines").unwrap_or("Error").to_string();
+        let csv = matches.is_present("csv_mode")
+                || matches.is_present("delimiter");
+        let delim = matches.value_of("delimiter").unwrap_or(",");
+        let index = matches.value_of("index").unwrap_or("2");
+        let index: usize =
+                index.parse().expect("Provide a valid positive integer.");
+        if file.is_empty() {
                 // Reading from pipe adapted from:
                 // https://stackoverflow.com/a/49734144
                 let mut v: Vec<String> = vec![];
@@ -102,9 +118,9 @@ fn main() {
                 if line_number <= v.len() {
                         if csv {
                                 let line: Vec<&str> = v[line_number - 1]
-                                        .split(&delim)
+                                        .split(delim)
                                         .collect();
-                                println!("{}", line[1]);
+                                println!("{}", line[index - 1]);
                         } else {
                                 println!("{}", v[line_number - 1]);
                         }
@@ -115,7 +131,7 @@ fn main() {
                                 v.len()
                         );
                 }
-        } else if !help && !file.is_empty() && !line.is_empty() {
+        } else {
                 let line_number: usize = line
                         .parse()
                         .expect("Please provide a valid line number!");
@@ -126,9 +142,12 @@ fn main() {
                                 if csv {
                                         let val: Vec<&str> = lines
                                                 [line_number - 1]
-                                                .split(&delim)
+                                                .split(delim)
                                                 .collect();
-                                        println!("{}", val[1].to_string());
+                                        println!(
+                                                "{}",
+                                                val[index - 1].to_string()
+                                        );
                                 } else {
                                         println!("{}", lines[line_number - 1]);
                                 }
@@ -145,13 +164,7 @@ fn main() {
                 content.unwrap()
             );
                 }
-        } else {
-                print_usage();
         }
-}
-
-fn print_usage() {
-        println!("lecho -l line [-f file] [-c] [-d delimiter]");
 }
 
 fn parse(s: String) -> Vec<String> {
