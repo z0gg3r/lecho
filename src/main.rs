@@ -74,9 +74,9 @@ fn main() {
                         .short("-d")
                         .long("-delmiter")
                         .takes_value(true)
-                        .help("The delimter that is used (implies -c)"))
+                        .help("The delimter that is used (Implies -c)"))
                 .arg(Arg::with_name("index").short("-i").long("-index").help(
-                        "Which field of the CSV line to print (Default: 2)",
+                        "Which field of the CSV line to print (Default: 2 | Implies -c)",
                 ))
                 .group(ArgGroup::with_name("lines")
                         .args(&["line", "_line"])
@@ -86,7 +86,8 @@ fn main() {
         let file = matches.value_of("infile").unwrap_or("").to_string();
         let line = matches.value_of("lines").unwrap_or("Error").to_string();
         let csv = matches.is_present("csv_mode")
-                || matches.is_present("delimiter");
+                || matches.is_present("delimiter")
+                || matches.is_present("index");
         let delim = matches.value_of("delimiter").unwrap_or(",");
         let index = matches.value_of("index").unwrap_or("2");
         let index: usize =
