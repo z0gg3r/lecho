@@ -62,8 +62,8 @@ fn main() {
                         .takes_value(true)
                         .help("The line to echo")
                         .short("-l")
-                        .long("-file"))
-                .arg(Arg::with_name("_line")
+                        .long("-line"))
+                .arg(Arg::with_name(" line")
                         .takes_value(true)
                         .help("The line to echo"))
                 .arg(Arg::with_name("csv_mode")
@@ -75,11 +75,11 @@ fn main() {
                         .long("-delmiter")
                         .takes_value(true)
                         .help("The delimter that is used (Implies -c)"))
-                .arg(Arg::with_name("index").short("-i").long("-index").help(
+                .arg(Arg::with_name("index").short("-i").long("-index").takes_value(true).help(
                         "Which field of the CSV line to print (Default: 2 | Implies -c)",
                 ))
                 .group(ArgGroup::with_name("lines")
-                        .args(&["line", "_line"])
+                        .args(&["line", " line"])
                         .required(true))
                 .get_matches();
 
