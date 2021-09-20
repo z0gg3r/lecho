@@ -2,12 +2,11 @@
 name = "lecho"
 description = "Line Echo - Echo a specific line from a file"
 authors = ["zocker <zockerfreunde03.info@gmx.de>"]
-version = "0.3.1"
+version = "0.3.2"
 edition = "2018"
 license = "GPLv3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-getopt = "1.1"
 clap = "2.33.3"
