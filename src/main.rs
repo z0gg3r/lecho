@@ -90,9 +90,13 @@ fn main() {
                 || matches.is_present("index");
         let delim = matches.value_of("delimiter").unwrap_or(",");
         let index = matches.value_of("index").unwrap_or("2");
-        let index: usize =
-                index.parse().expect("Provide a valid positive integer.");
-        if file.is_empty() {
+        let index: usize = index.parse().unwrap_or_else(|_| {
+                eprintln!("Please provide a valid positive integer (i >= 1)");
+                0
+        });
+        if index == 0 {
+                // Don't do anything.
+        } else if file.is_empty() {
                 // Reading from pipe adapted from:
                 // https://stackoverflow.com/a/49734144
                 let mut v: Vec<String> = vec![];
@@ -114,7 +118,10 @@ fn main() {
 
                 let line_number: usize = line
                         .parse()
-                        .expect("Please provide a valid line number!");
+                        .unwrap_or_else(|_| {
+                            eprintln!("Please provide a valid line number (i >= 1). Note: to exit the line number will be set to the length of the file + 1");
+                            v.len() + 1
+                        });
 
                 if line_number <= v.len() {
                         if csv {
@@ -133,12 +140,15 @@ fn main() {
                         );
                 }
         } else {
-                let line_number: usize = line
-                        .parse()
-                        .expect("Please provide a valid line number!");
                 let content = read_file(file);
                 if content.is_ok() {
                         let lines = parse(content.unwrap());
+                        let line_number: usize = line
+                            .parse()
+                            .unwrap_or_else(|_| {
+                                    eprintln!("Please provide a valid line number (i >= 1). Note: To exit the line number will be set to the length of the file + 1");
+                                    lines.len() + 1
+                            });
                         if !line_number > lines.len() {
                                 if csv {
                                         let val: Vec<&str> = lines
