@@ -94,6 +94,9 @@ fn main() {
                 eprintln!("Please provide a valid positive integer (i >= 1)");
                 0
         });
+
+        let delim = remap_special_chars(delim);
+
         if index == 0 {
                 // Don't do anything.
         } else if file.is_empty() {
@@ -122,7 +125,8 @@ fn main() {
                             eprintln!("Please provide a valid line number (i >= 1). Note: to exit the line number will be set to the length of the file + 1");
                             v.len() + 1
                         });
-
+                dbg!(v.clone());
+                dbg!(line_number);
                 if line_number <= v.len() {
                         if csv {
                                 let line: Vec<&str> = v[line_number - 1]
@@ -149,7 +153,7 @@ fn main() {
                                     eprintln!("Please provide a valid line number (i >= 1). Note: To exit the line number will be set to the length of the file + 1");
                                     lines.len() + 1
                             });
-                        if !line_number > lines.len() {
+                        if line_number < lines.len() {
                                 if csv {
                                         let val: Vec<&str> = lines
                                                 [line_number - 1]
@@ -176,6 +180,16 @@ fn main() {
             );
                 }
         }
+}
+
+fn remap_special_chars(delim: &str) -> &str {
+        let s = match delim {
+            "\\t" => "\t",
+            "\\n" => "\n",
+            _     => delim,
+        };
+
+        s
 }
 
 fn parse(s: String) -> Vec<String> {
